@@ -1,0 +1,89 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DescribeResources",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeImages",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeKeyPairs",
+        "ec2:DescribeInstances",
+        "ec2:DescribeInstanceStatus",
+        "ec2:DescribeTags",
+        "ec2:DescribeVpcs",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeInstanceTypes",
+        "ec2:DescribeInstanceAttribute",
+        "ec2:DescribeVolumes",
+        "ec2:DescribeInstanceCreditSpecifications",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:DescribeVpcAttribute",
+        "ec2:DescribeAvailabilityZones"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RunInstancesCheapOnly",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:RunInstances"
+      ],
+      "Resource": "arn:aws:ec2:eu-central-1:743075543684:instance/*",
+      "Condition": {
+        "StringEquals": {
+          "ec2:InstanceType": [
+            "t3.nano",
+            "t3.micro",
+            "t2.nano",
+            "t2.micro"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "RunInstancesOtherResources",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:RunInstances"
+      ],
+      "Resource": [
+        "arn:aws:ec2:eu-central-1::image/*",
+        "arn:aws:ec2:eu-central-1:743075543684:security-group/*",
+        "arn:aws:ec2:eu-central-1:743075543684:subnet/*",
+        "arn:aws:ec2:eu-central-1:743075543684:network-interface/*",
+        "arn:aws:ec2:eu-central-1:743075543684:volume/*",
+        "arn:aws:ec2:eu-central-1:743075543684:key-pair/*"
+      ]
+    },
+    {
+      "Sid": "ManageOwnInstances",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:TerminateInstances",
+        "ec2:StopInstances",
+        "ec2:ModifyInstanceAttribute"
+      ],
+      "Resource": "arn:aws:ec2:eu-central-1:743075543684:instance/*",
+      "Condition": {
+        "StringEquals": {
+          "ec2:ResourceTag/Name": "cafe-tunnel"
+        }
+      }
+    },
+    {
+      "Sid": "TagOnCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags"
+      ],
+      "Resource": "arn:aws:ec2:eu-central-1:743075543684:instance/*",
+      "Condition": {
+        "StringEquals": {
+          "ec2:CreateAction": "RunInstances"
+        }
+      }
+    }
+  ]
+}
+
