@@ -22,7 +22,7 @@ Every visit to my favourite cafe saves me ~5 mins of manual clicking in AWS cons
 
 ## SSH Config
 
-Add tags to your `~/.ssh/config` for the scripts to update:
+Add tags `#tunnel-manager-ip` and `#tunnel-manager-proxy-jump` to your `~/.ssh/config` for the scripts to update:
 
 ```
 Host jump
@@ -31,7 +31,7 @@ Host jump
     IdentityFile ~/.ssh/mac.pem
     User ec2-user
 
-Host bluh
+Host your_ssh_server
     ...
     #ProxyJump jump #tunnel-manager-proxy-jump
 ```
